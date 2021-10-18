@@ -22,26 +22,22 @@ class TransactionController extends Controller
             $transaction = Transaction::with(['items.product'])->find($id);
 
             if($transaction)
-            {
                 return ResponseFormatter::success(
                     $transaction,
                     'Data transaksi berhasil diambil'
                 );
-            } else {
+            else
                 return ResponseFormatter::error(
                     null,
                     'Data transaksi tidak ada',
                     404
                 );
-            }
         }
 
         $transaction = Transaction::with(['items.product'])->where('users_id', Auth::user()->id);
 
         if($status)
-        {
             $transaction->where('status', $status);
-        }
 
         return ResponseFormatter::success(
             $transaction->paginate($limit),
@@ -49,6 +45,10 @@ class TransactionController extends Controller
         );
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function checkout(Request $request)
     {
         $request->validate([
@@ -56,7 +56,7 @@ class TransactionController extends Controller
             'items.*.id' => 'exists:products,id',
             'total_price' => 'required',
             'shipping_price' => 'required',
-            'status' => 'required|in:PENDING,SUCCESS,CANCELLED,FAILED,SHIPPING,SHIPPED'
+            'status' => 'required|in:PENDING,SUCCESS,CANCELLED,FAILED,SHIPPING,SHIPPED',
         ]);
 
         $transaction = Transaction::create([
@@ -66,7 +66,7 @@ class TransactionController extends Controller
             'shipping_price' => $request->shipping_price,
             'status' => $request->status
         ]);
-
+        
         foreach ($request->items as $product) {
             TransactionItem::create([
                 'users_id' => Auth::user()->id,
