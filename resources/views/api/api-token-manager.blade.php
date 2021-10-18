@@ -104,11 +104,9 @@
                 {{ __('Please copy your new API token. For your security, it won\'t be shown again.') }}
             </div>
 
-            <x-jet-input x-ref="plaintextToken" type="text" readonly :value="$plainTextToken"
-                class="mt-4 bg-gray-100 px-4 py-2 rounded font-mono text-sm text-gray-500 w-full"
-                autofocus autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
-                @showing-token-modal.window="setTimeout(() => $refs.plaintextToken.select(), 250)"
-            />
+            <div class="mt-4 bg-gray-100 px-4 py-2 rounded font-mono text-sm text-gray-500">
+                {{ $plainTextToken }}
+            </div>
         </x-slot>
 
         <x-slot name="footer">
@@ -137,7 +135,7 @@
 
         <x-slot name="footer">
             <x-jet-secondary-button wire:click="$set('managingApiTokenPermissions', false)" wire:loading.attr="disabled">
-                {{ __('Cancel') }}
+                {{ __('Nevermind') }}
             </x-jet-secondary-button>
 
             <x-jet-button class="ml-2" wire:click="updateApiToken" wire:loading.attr="disabled">
@@ -158,7 +156,7 @@
 
         <x-slot name="footer">
             <x-jet-secondary-button wire:click="$toggle('confirmingApiTokenDeletion')" wire:loading.attr="disabled">
-                {{ __('Cancel') }}
+                {{ __('Nevermind') }}
             </x-jet-secondary-button>
 
             <x-jet-danger-button class="ml-2" wire:click="deleteApiToken" wire:loading.attr="disabled">
